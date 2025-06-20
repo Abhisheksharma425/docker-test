@@ -2,13 +2,23 @@ name: Build and push Docker image
 
 on:
   push:
-    branches:
-      - main
+    paths:
+      - 'apps/*/**'  # Only run when files change inside apps/* folders
 
 jobs:
   build_and_push:
     runs-on: ubuntu-latest
+
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get changed folder name
+        id: get_folder
+        run: |
+          folder=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^apps/' | awk -F/ '{print $2}' | sort -u | head -n1)
+          echo "FOLDER_NAME=$folder" >> $GITHUB_OUTPUT
+
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -18,8 +28,9 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build and push
+      - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
+          context: ./apps/${{ steps.get_folder.outputs.FOLDER_NAME }}
           push: true
-          tags: ${{ vars.DOCKER_USERNAME }}/${{ github.event.repository.name }}:latest
+          tags: ${{ vars.DOCKER_USERNAME }}/${{ steps.get_folder.outputs.FOLDER_NAME }}:latest
