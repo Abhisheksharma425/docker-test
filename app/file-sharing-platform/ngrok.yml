@@ -1,0 +1,7 @@
+version: 2
+authtoken: 2yjpUKZzk1U7mCaYkhWHdHFENer_7NqoyjGGvgQx2EpCdLSkg
+tunnels:
+  flask:
+    proto: http
+    addr: 5000
+    domain: arriving-garfish-bold.ngrok-free.app
