@@ -15,7 +15,7 @@ jobs:
         
       - name: 🐛 Print GitHub context for debugging
         run: |
-          echo "Repository: ${{ github.repository }}"
+          echo "Repository: ${{ github.repository.name }}"
           echo "Actor: ${{ github.actor }}"
           echo "Ref: ${{ github.ref }}"
           echo "SHA: ${{ github.sha }}"
