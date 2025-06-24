@@ -22,8 +22,10 @@ jobs:
       - name: Get changed folder name
         id: get_folder
         run: |
-          folder=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^apps/' | awk -F/ '{print $2}' | sort -u | head -n1)
-          echo "FOLDER_NAME=$folder" >> $GITHUB_OUTPUT
+          folder=$(ls -d apps/*/ | head -n 1)
+          folder_name=$(basename "$folder")
+          echo "Detected folder: $folder_name"
+          echo "folder_name=$folder_name" >> $GITHUB_OUTPUT
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
