@@ -15,10 +15,10 @@ jobs:
         
       - name: 🐛 Print GitHub context for debugging
         run: |
-          folder=$(ls -d apps/*/ | head -n 1)
-          folder_name=$(basename "$folder")
-          echo "Detected folder: $folder_name"
-          echo "folder_name=$folder_name" >> $GITHUB_OUTPUT
+          folder=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} )
+          
+          echo "Detected folder: $folder"
+          echo "folder_name=$folder" >> $GITHUB_OUTPUT
           
       - name: Get changed folder name
         id: get_folder
