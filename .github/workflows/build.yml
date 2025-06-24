@@ -15,7 +15,8 @@ jobs:
         
       - name: 🐛 Print GitHub context for debugging
         run: |
-          folder_name=$(basename "$PWD")
+          folder_name=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^apps/' | awk -F/ '{print $2}' | sort -u)
+
           echo "Current folder name is: $folder_name"
           
       - name: Get changed folder name
